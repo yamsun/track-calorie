@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import BarChartRoundedIcon from "@mui/icons-material/BarChartRounded";
+import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`font-sans ${inter.className} text-gray-900`}>
+        <div className="container mx-auto sm:px-6 lg:px-8 flex justify-center">
+          <div className="w-full max-w-full sm:max-w-[600px] min-h-screen flex flex-col">
+            {children}
+          </div>
+        </div>
+      </body>
     </html>
   );
 }
