@@ -19,6 +19,7 @@ interface Food {
   knownAs?: string; // Added this property
   image?: string;
   nutrients: Nutrients;
+  measures?: [];
 }
 
 export interface SelectedFoodItem {

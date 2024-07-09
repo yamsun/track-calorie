@@ -22,10 +22,6 @@ import useFoodStore, { SelectedFoodItem } from "@/store/useFoodStore";
 
 const inter = Inter({ subsets: ["latin"] });
 
-interface CustomLayoutProps {
-  children?: ReactNode;
-}
-
 interface Ingredient {
   text: string;
   weight: number;
@@ -55,7 +51,7 @@ const getHumanReadableDate = (date: dayjs.Dayjs) => {
   }
 };
 
-const CustomLayout = ({ children }: CustomLayoutProps) => {
+const CustomLayout = () => {
   const [date, setDate] = useState<dayjs.Dayjs>(dayjs());
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
 
@@ -130,50 +126,58 @@ const CustomLayout = ({ children }: CustomLayoutProps) => {
   };
 
   // Function to convert foodMealWise to foodData format
-  function convertTofoodData(foodMealWise) {
+  function convertTofoodData(foodMealWise: never[]) {
     if (!foodMealWise || typeof foodMealWise !== "object") {
       return [];
     }
 
     const mealOrder = ["breakfast", "lunch", "dinner"];
     const foodData = mealOrder
-      .map((mealType) => {
+      .map((mealType: string) => {
         const meals = foodMealWise[mealType];
         if (!meals) {
           return null;
         }
 
-        const totalCalories = meals.reduce((sum, meal) => {
-          return sum + meal.food.nutrients.ENERC_KCAL;
-        }, 0);
+        const totalCalories = meals.reduce(
+          (sum: any, meal: { food: { nutrients: { ENERC_KCAL: any } } }) => {
+            return sum + meal.food.nutrients.ENERC_KCAL;
+          },
+          0
+        );
 
         // Get ingredients and sort by weight in descending order
-        const ingredients = meals.map((meal) => ({
-          text: meal.food.label,
-          weight: meal.measures.reduce(
-            (sum, measure) => sum + measure.weight,
-            0
-          ),
-        }));
+        const ingredients = meals.map(
+          (meal: { food: { label: any }; measures: any[] }) => ({
+            text: meal.food.label,
+            weight: meal.measures.reduce(
+              (sum, measure) => sum + measure.weight,
+              0
+            ),
+          })
+        );
 
         const sortedIngredients = ingredients.sort(
-          (a, b) => b.weight - a.weight
+          (a: { weight: number }, b: { weight: number }) => b.weight - a.weight
         );
         const topIngredients = sortedIngredients.slice(0, 3);
         const moreIngredients = sortedIngredients.slice(3);
 
-        const ingredientsWithMore = topIngredients.map((ingredient, index) => {
-          return {
-            text: ingredient.text,
-            weight: ingredient.weight,
-          };
-        });
+        const ingredientsWithMore = topIngredients.map(
+          (ingredient: { text: any; weight: any }, index: any) => {
+            return {
+              text: ingredient.text,
+              weight: ingredient.weight,
+            };
+          }
+        );
 
         if (moreIngredients.length > 0) {
           ingredientsWithMore.push({
             text: "more",
             weight: moreIngredients.reduce(
-              (sum, ingredient) => sum + ingredient.weight,
+              (sum: any, ingredient: { weight: any }) =>
+                sum + ingredient.weight,
               0
             ),
           });

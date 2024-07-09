@@ -37,10 +37,6 @@ import useFoodStore from "@/store/useFoodStore";
 
 const inter = Inter({ subsets: ["latin"] });
 
-interface ViewLogProps {
-  children?: ReactNode;
-}
-
 interface Nutrients {
   ENERC_KCAL: number;
   PROCNT: number;
@@ -85,7 +81,7 @@ const debounce = (func: Function, delay: number) => {
   };
 };
 
-const ViewLog = ({ children }: ViewLogProps) => {
+const ViewLog = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
